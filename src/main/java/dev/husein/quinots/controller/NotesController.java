@@ -1,52 +1,72 @@
 package dev.husein.quinots.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.husein.quinots.exception.IllegalQueryParamException;
 import dev.husein.quinots.model.BaseJson;
 import dev.husein.quinots.model.Note;
-import dev.husein.quinots.repository.NoteRepository;
+import dev.husein.quinots.model.ResponseError;
+import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/quinots/api")
+@RequestMapping("/quinots/api/notes")
 public class NotesController {
 
     @Autowired
-    private NoteRepository noteRepository;
+    private NoteService noteService;
 
-    @GetMapping("/test")
-    public BaseJson testNote() {
-        Note note = new Note();
-        note.setTitle("Test Note");
-        note.setDescription("Detrius peritus domus est.");
-        note.setDateTimeCreated(LocalDateTime.now());
-        note.setTags(new ArrayList<String>(Arrays.asList("work", "java", "future", "fun")));
+    @PostMapping("/create")
+    public BaseJson createNote(@RequestBody Note note) {
+        return noteService.createNote(note);
+    }
 
-        noteRepository.save(note);
+    @DeleteMapping("/delete")
+    public void deleteNoteById(@RequestParam("id") Long id) {
+        noteService.deleteNote(id);
+    }
 
-        BaseJson base = new BaseJson();
-
-        base.addNoteToList(noteRepository.findById(note.getId()).get());
-
-        return base;
+    @PatchMapping("/update")
+    public void editNote(@RequestParam("id") Long id, @RequestBody Note editedNote) {
+        noteService.updateNote(id, editedNote);
     }
 
     @GetMapping("/list")
     public BaseJson listAllNotes() {
-        return new BaseJson(noteRepository.findAll());
+        return noteService.listAllNotes();
     }
 
-
-    @DeleteMapping("/delete")
-    public void deleteNoteById(@RequestParam("id") Long id) {
-        noteRepository.deleteById(id);
+    @GetMapping("/search")
+    public BaseJson searchNotes(@RequestParam(value = "includingWords", required = false) String includingWords,
+                                 @RequestParam(value = "fromDate", required = false) LocalDate fromDate,
+                                 @RequestParam(value = "toDate", required = false) LocalDate toDate) {
+        return noteService.searchNotes(includingWords, fromDate, toDate);
     }
 
+    @GetMapping("/list/{id}")
+    public BaseJson getNoteById(@PathVariable("id") Long id) {
+        return noteService.getNoteById(id);
+    }
+
+    @GetMapping("/listByTag")
+    public BaseJson listByTag(@RequestParam("tag") String tag) {
+        return noteService.listByTag(tag);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ResponseError> handleMissingQueryParamException(MissingServletRequestParameterException e) {
+        ResponseError error = new ResponseError();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalQueryParamException.class)
+    public ResponseEntity<ResponseError> handleInvalidQueryParamException(IllegalQueryParamException e) {
+        ResponseError error = new ResponseError();
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
+
