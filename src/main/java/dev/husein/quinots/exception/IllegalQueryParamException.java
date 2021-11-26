@@ -1,4 +1,4 @@
-package io.hatchways.alhussein.backendassignment.exception;
+package dev.husein.quinots.exception;
 
 public class IllegalQueryParamException extends IllegalArgumentException {
     public IllegalQueryParamException() {
