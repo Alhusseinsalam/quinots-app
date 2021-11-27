@@ -9,7 +9,7 @@ import java.util.List;
 
 @Converter
 public class TagsConverter implements AttributeConverter<List<String>, String> {
-    private static final String SEPARATOR_CHAR = ",";
+    public static final String SEPARATOR_CHAR = ",";
 
     @Override
     public String convertToDatabaseColumn(List<String> strings) {

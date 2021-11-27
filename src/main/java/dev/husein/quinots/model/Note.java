@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -38,4 +37,12 @@ public class Note {
     @Convert(converter = TagsConverter.class)
     @JsonProperty("tags")
     private List<String> tags;
+
+    public Note() {
+        setDateTimeCreated(LocalDateTime.now());
+    }
+
+    public void setDateTimeCreated(LocalDateTime dateTimeCreated) {
+        this.dateTimeCreated = dateTimeCreated.withNano(0);
+    }
 }

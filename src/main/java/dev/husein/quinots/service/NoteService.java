@@ -1,6 +1,7 @@
 package dev.husein.quinots.service;
 
 import com.google.common.base.Strings;
+import dev.husein.quinots.adapter.TagsConverter;
 import dev.husein.quinots.exception.IllegalQueryParamException;
 import dev.husein.quinots.model.BaseJson;
 import dev.husein.quinots.model.Note;
@@ -8,7 +9,10 @@ import dev.husein.quinots.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class NoteService {
@@ -58,9 +62,34 @@ public class NoteService {
         return new BaseJson(noteRepository.findAll());
     }
 
-    public BaseJson searchNotes(String includingWords, LocalDate fromDate, LocalDate toDate) {
+    public BaseJson searchNotes(String includingWords, LocalDateTime fromDate, LocalDateTime toDate, String tagsStr) {
         BaseJson baseJson = new BaseJson();
-        // TODO:
+        List<String> tags = new ArrayList<>();
+
+        if (!Strings.isNullOrEmpty(tagsStr)) {
+            tags = Arrays.asList(tagsStr.split(TagsConverter.SEPARATOR_CHAR));
+        }
+
+        List<Note> listOfNotesWithAnyTag = noteRepository.searchNotes(includingWords, fromDate, toDate);
+
+        // if tag filter is requested
+        if (tags.size() > 0) {
+            // go through the list and remove every note that doesn't have any of the tags in its tags field
+            List<Note> notesFilteredByTag = new ArrayList<>();
+
+            // filter list of notes by tag
+            List<String> finalTags = tags;
+            listOfNotesWithAnyTag.stream().iterator().forEachRemaining(note -> {
+                if (note.getTags().stream().anyMatch(finalTags::contains)) {
+                    notesFilteredByTag.add(note);
+                }
+            });
+
+
+            baseJson.setNotes(notesFilteredByTag);
+        } else {
+            baseJson.setNotes(listOfNotesWithAnyTag);
+        }
 
         return baseJson;
     }
@@ -73,13 +102,6 @@ public class NoteService {
             // this is wrong should be changed to another type of exception
             throw new IllegalQueryParamException();
         }
-
-        return baseJson;
-    }
-
-    public BaseJson listByTag(String tag) {
-        BaseJson baseJson = new BaseJson();
-        // TODO:
 
         return baseJson;
     }

@@ -6,12 +6,14 @@ import dev.husein.quinots.model.Note;
 import dev.husein.quinots.model.ResponseError;
 import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/quinots/api/notes")
@@ -42,19 +44,15 @@ public class NotesController {
 
     @GetMapping("/search")
     public BaseJson searchNotes(@RequestParam(value = "includingWords", required = false) String includingWords,
-                                 @RequestParam(value = "fromDate", required = false) LocalDate fromDate,
-                                 @RequestParam(value = "toDate", required = false) LocalDate toDate) {
-        return noteService.searchNotes(includingWords, fromDate, toDate);
+                                @RequestParam(value = "fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDate,
+                                @RequestParam(value = "toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDate,
+                                @RequestParam(value = "tags", required = false) String tags) {
+        return noteService.searchNotes(includingWords, fromDate, toDate, tags);
     }
 
     @GetMapping("/list/{id}")
     public BaseJson getNoteById(@PathVariable("id") Long id) {
         return noteService.getNoteById(id);
-    }
-
-    @GetMapping("/listByTag")
-    public BaseJson listByTag(@RequestParam("tag") String tag) {
-        return noteService.listByTag(tag);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
