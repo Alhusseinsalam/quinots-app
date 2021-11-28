@@ -2,7 +2,7 @@ package dev.husein.quinots.service;
 
 import com.google.common.base.Strings;
 import dev.husein.quinots.adapter.TagsConverter;
-import dev.husein.quinots.exception.IllegalQueryParamException;
+import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.BaseJson;
 import dev.husein.quinots.model.Note;
 import dev.husein.quinots.repository.NoteRepository;
@@ -54,7 +54,7 @@ public class NoteService {
             noteRepository.saveAndFlush(existingNote);
 
         } else {
-            throw new IllegalQueryParamException();
+            throw new QuinotsException();
         }
     }
 
@@ -100,7 +100,7 @@ public class NoteService {
             baseJson.addNoteToList(noteRepository.findById(id).get());
         } else {
             // this is wrong should be changed to another type of exception
-            throw new IllegalQueryParamException();
+            throw new QuinotsException();
         }
 
         return baseJson;

@@ -1,19 +1,21 @@
 package dev.husein.quinots.controller;
 
-import dev.husein.quinots.exception.IllegalQueryParamException;
+import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.BaseJson;
 import dev.husein.quinots.model.Note;
 import dev.husein.quinots.model.ResponseError;
 import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/quinots/api/notes")
@@ -51,20 +53,10 @@ public class NotesController {
     }
 
     @GetMapping("/list/{id}")
+    @ResponseBody
     public BaseJson getNoteById(@PathVariable("id") Long id) {
         return noteService.getNoteById(id);
     }
 
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ResponseError> handleMissingQueryParamException(MissingServletRequestParameterException e) {
-        ResponseError error = new ResponseError();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(IllegalQueryParamException.class)
-    public ResponseEntity<ResponseError> handleInvalidQueryParamException(IllegalQueryParamException e) {
-        ResponseError error = new ResponseError();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
 }
 
