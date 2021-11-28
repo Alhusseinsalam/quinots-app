@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResponseError {
+public class ErrorResponse {
     @JsonProperty("Error")
     private String errMsg;
 }

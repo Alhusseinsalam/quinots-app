@@ -2,7 +2,10 @@ package dev.husein.quinots.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.husein.quinots.adapter.TagsConverter;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
