@@ -9,9 +9,9 @@ import dev.husein.quinots.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -62,7 +62,7 @@ public class NoteService {
         return new BaseJson(noteRepository.findAll());
     }
 
-    public BaseJson searchNotes(String includingWords, LocalDateTime fromDate, LocalDateTime toDate, String tagsStr) {
+    public BaseJson searchNotes(String includingWords, Calendar fromDate, Calendar toDate, String tagsStr) {
         BaseJson baseJson = new BaseJson();
         List<String> tags = new ArrayList<>();
 
@@ -97,10 +97,9 @@ public class NoteService {
     public BaseJson getNoteById(Long id) {
         BaseJson baseJson = new BaseJson();
         if (noteRepository.existsById(id)) {
-            baseJson.addNoteToList(noteRepository.findById(id).get());
+            baseJson.addNoteToList(noteRepository.findById(id).orElse(null));
         } else {
-            // this is wrong should be changed to another type of exception
-            throw new QuinotsException();
+            throw new QuinotsException(String.format("Note with ID %d can't be found", id));
         }
 
         return baseJson;

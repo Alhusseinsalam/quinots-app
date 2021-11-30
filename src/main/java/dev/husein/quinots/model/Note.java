@@ -2,16 +2,15 @@ package dev.husein.quinots.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.husein.quinots.adapter.TagsConverter;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -33,19 +32,12 @@ public class Note {
     private String description;
 
     @Column(name = "dateTimeCreated")
+    @CreationTimestamp
     @JsonProperty("dateTimeCreated")
-    private LocalDateTime dateTimeCreated;
+    private Timestamp dateTimeCreated;
 
     @Column(name = "tags")
     @Convert(converter = TagsConverter.class)
     @JsonProperty("tags")
     private List<String> tags;
-
-    public Note() {
-        setDateTimeCreated(LocalDateTime.now());
-    }
-
-    public void setDateTimeCreated(LocalDateTime dateTimeCreated) {
-        this.dateTimeCreated = dateTimeCreated.withNano(0);
-    }
 }
