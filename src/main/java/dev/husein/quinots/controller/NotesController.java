@@ -1,10 +1,12 @@
 package dev.husein.quinots.controller;
 
-import dev.husein.quinots.model.BaseJson;
+import dev.husein.quinots.model.BaseResponse;
 import dev.husein.quinots.model.Note;
 import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -17,7 +19,7 @@ public class NotesController {
     private NoteService noteService;
 
     @PostMapping("/create")
-    public BaseJson createNote(@RequestBody Note note) {
+    public BaseResponse createNote(@RequestBody Note note) {
         return noteService.createNote(note);
     }
 
@@ -32,21 +34,21 @@ public class NotesController {
     }
 
     @GetMapping("/list")
-    public BaseJson listAllNotes() {
+    public BaseResponse listAllNotes() {
         return noteService.listAllNotes();
     }
 
     @GetMapping("/search")
-    public BaseJson searchNotes(@RequestParam(value = "includingWords", required = false) String includingWords,
-                                @RequestParam(value = "fromDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Calendar fromDate,
-                                @RequestParam(value = "toDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Calendar toDate,
-                                @RequestParam(value = "tags", required = false) String tags) {
+    public BaseResponse searchNotes(@RequestParam(value = "includingWords", required = false) String includingWords,
+                                    @RequestParam(value = "fromDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Calendar fromDate,
+                                    @RequestParam(value = "toDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Calendar toDate,
+                                    @RequestParam(value = "tags", required = false) String tags) {
         return noteService.searchNotes(includingWords, fromDate, toDate, tags);
     }
 
     @GetMapping("/list/{id}")
     @ResponseBody
-    public BaseJson getNoteById(@PathVariable("id") Long id) {
+    public BaseResponse getNoteById(@PathVariable("id") Long id) {
         return noteService.getNoteById(id);
     }
 

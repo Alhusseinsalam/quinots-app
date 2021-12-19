@@ -3,7 +3,7 @@ package dev.husein.quinots.service;
 import com.google.common.base.Strings;
 import dev.husein.quinots.adapter.TagsConverter;
 import dev.husein.quinots.exception.QuinotsException;
-import dev.husein.quinots.model.BaseJson;
+import dev.husein.quinots.model.BaseResponse;
 import dev.husein.quinots.model.Note;
 import dev.husein.quinots.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public BaseJson createNote(Note note) {
-        BaseJson baseJson = new BaseJson();
-        baseJson.addNoteToList(noteRepository.saveAndFlush(note));
-        return baseJson;
+    public BaseResponse createNote(Note note) {
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.addNoteToList(noteRepository.saveAndFlush(note));
+        return baseResponse;
     }
 
     public void deleteNote(Long id) {
@@ -58,12 +58,12 @@ public class NoteService {
         }
     }
 
-    public BaseJson listAllNotes() {
-        return new BaseJson(noteRepository.findAll());
+    public BaseResponse listAllNotes() {
+        return new BaseResponse(noteRepository.findAll());
     }
 
-    public BaseJson searchNotes(String includingWords, Calendar fromDate, Calendar toDate, String tagsStr) {
-        BaseJson baseJson = new BaseJson();
+    public BaseResponse searchNotes(String includingWords, Calendar fromDate, Calendar toDate, String tagsStr) {
+        BaseResponse baseResponse = new BaseResponse();
         List<String> tags = new ArrayList<>();
 
         if (!Strings.isNullOrEmpty(tagsStr)) {
@@ -86,23 +86,23 @@ public class NoteService {
             });
 
 
-            baseJson.setNotes(notesFilteredByTag);
+            baseResponse.setNotes(notesFilteredByTag);
         } else {
-            baseJson.setNotes(listOfNotesWithAnyTag);
+            baseResponse.setNotes(listOfNotesWithAnyTag);
         }
 
-        return baseJson;
+        return baseResponse;
     }
 
-    public BaseJson getNoteById(Long id) {
-        BaseJson baseJson = new BaseJson();
+    public BaseResponse getNoteById(Long id) {
+        BaseResponse baseResponse = new BaseResponse();
         if (noteRepository.existsById(id)) {
-            baseJson.addNoteToList(noteRepository.findById(id).orElse(null));
+            baseResponse.addNoteToList(noteRepository.findById(id).orElse(null));
         } else {
             throw new QuinotsException(String.format("Note with ID %d can't be found", id));
         }
 
-        return baseJson;
+        return baseResponse;
     }
 
 }

@@ -15,11 +15,11 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "NOTE")
+@Table(name = "q_note")
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "noteId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "note_id")
     @JsonProperty("noteId")
     private Long id;
 
@@ -31,7 +31,7 @@ public class Note {
     @JsonProperty("description")
     private String description;
 
-    @Column(name = "dateTimeCreated")
+    @Column(name = "date_time_created")
     @CreationTimestamp
     @JsonProperty("dateTimeCreated")
     private Timestamp dateTimeCreated;
@@ -40,4 +40,8 @@ public class Note {
     @Convert(converter = TagsConverter.class)
     @JsonProperty("tags")
     private List<String> tags;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

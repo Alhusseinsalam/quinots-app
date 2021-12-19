@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ToString
-public class BaseJson {
+public class BaseResponse {
     @JsonProperty("dataSize")
     private Integer size;
 
@@ -18,12 +18,12 @@ public class BaseJson {
     @Setter
     private List<Note> notes;
 
-    public BaseJson() {
+    public BaseResponse() {
         size = 0;
         this.notes = new ArrayList<>();
     }
 
-    public BaseJson(List<Note> notes) {
+    public BaseResponse(List<Note> notes) {
         super();
         this.notes = notes;
     }

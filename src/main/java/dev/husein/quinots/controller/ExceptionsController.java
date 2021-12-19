@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.client.HttpServerErrorException;
 
 
 @ControllerAdvice
@@ -55,6 +56,13 @@ public class ExceptionsController {
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> requestHandlingNoHandlerFound(NoHandlerFoundException e) {
         ErrorResponse error = new ErrorResponse("Incorrect Path.");
+        return new ResponseEntity<>(error,  HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpServerErrorException.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handle(HttpServerErrorException e) {
+        ErrorResponse error = new ErrorResponse("Internal server error, " + e.getMessage());
         return new ResponseEntity<>(error,  HttpStatus.NOT_FOUND);
     }
 
