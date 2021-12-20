@@ -1,13 +1,8 @@
 package dev.husein.quinots.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.*;
-
-import javax.persistence.*;
-import java.util.Arrays;
-import java.util.List;
 
 @Getter
 @ToString

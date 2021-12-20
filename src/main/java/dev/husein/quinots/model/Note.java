@@ -41,7 +41,16 @@ public class Note {
     @JsonProperty("tags")
     private List<String> tags;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
+    @JsonProperty("user")
     private User user;
+
+    public Note(String title, String description, Timestamp dateTimeCreated, List<String> tags, User user) {
+        this.title = title;
+        this.description = description;
+        this.dateTimeCreated = dateTimeCreated;
+        this.tags = tags;
+        this.user = user;
+    }
 }

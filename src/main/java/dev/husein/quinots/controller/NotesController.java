@@ -2,11 +2,10 @@ package dev.husein.quinots.controller;
 
 import dev.husein.quinots.model.BaseResponse;
 import dev.husein.quinots.model.Note;
+import dev.husein.quinots.service.NoteDTO;
 import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
@@ -18,9 +17,9 @@ public class NotesController {
     @Autowired
     private NoteService noteService;
 
-    @PostMapping("/create")
-    public BaseResponse createNote(@RequestBody Note note) {
-        return noteService.createNote(note);
+    @PostMapping("/create/{userId}")
+    public BaseResponse createNote(@PathVariable(value = "userId") Long userId, @RequestBody NoteDTO note) {
+        return noteService.createNote(userId, note.getTitle(), note.getDescription(), note.getDateTimeCreated(), note.getTags());
     }
 
     @DeleteMapping("/delete")

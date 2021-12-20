@@ -1,6 +1,5 @@
 package dev.husein.quinots.security;
 
-import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.User;
 import dev.husein.quinots.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.security.core.userdetails.User.withUsername;
 import java.util.Optional;
+
+import static org.springframework.security.core.userdetails.User.withUsername;
 
 @Component
 public class QuinotsUserDetailsService implements UserDetailsService {

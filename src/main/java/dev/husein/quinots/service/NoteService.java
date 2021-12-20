@@ -2,31 +2,41 @@ package dev.husein.quinots.service;
 
 import com.google.common.base.Strings;
 import dev.husein.quinots.adapter.TagsConverter;
+import dev.husein.quinots.controller.ExceptionsController;
 import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.BaseResponse;
 import dev.husein.quinots.model.Note;
+import dev.husein.quinots.model.User;
 import dev.husein.quinots.repository.NoteRepository;
+import dev.husein.quinots.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 public class NoteService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoteService.class);
 
+    private UserService userService;
     private NoteRepository noteRepository;
 
     @Autowired
-    public NoteService(NoteRepository noteRepository) {
+    public NoteService(NoteRepository noteRepository, UserService userService) {
         this.noteRepository = noteRepository;
+        this.userService = userService;
     }
 
-    public BaseResponse createNote(Note note) {
+    public BaseResponse createNote(Long userId, String title, String description, Timestamp dateTimeCreated, List<String> tags) {
+        LOGGER.debug("Creating Note");
+        LOGGER.debug("\nTitle: {} \nDescription: {} \nDate-Time Created: {} \nTags: {}", title, description, dateTimeCreated, tags);
+        LOGGER.debug("User: {}", userId);
+
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.addNoteToList(noteRepository.saveAndFlush(note));
+        baseResponse.addNoteToList(noteRepository.saveAndFlush(new Note(title, description, dateTimeCreated, tags, verifyUser(userId))));
         return baseResponse;
     }
 
@@ -54,7 +64,7 @@ public class NoteService {
             noteRepository.saveAndFlush(existingNote);
 
         } else {
-            throw new QuinotsException();
+            throw new QuinotsException("Error updating note");
         }
     }
 
@@ -103,6 +113,12 @@ public class NoteService {
         }
 
         return baseResponse;
+    }
+
+    private User verifyUser(Long userId) throws NoSuchElementException {
+        return userService.findUserById(userId).orElseThrow(() ->
+                new NoSuchElementException("User does not exist " + userId)
+        );
     }
 
 }
