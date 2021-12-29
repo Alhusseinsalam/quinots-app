@@ -46,10 +46,9 @@ public class Note {
     @JsonProperty("user")
     private User user;
 
-    public Note(String title, String description, Timestamp dateTimeCreated, List<String> tags, User user) {
+    public Note(String title, String description, List<String> tags, User user) {
         this.title = title;
         this.description = description;
-        this.dateTimeCreated = dateTimeCreated;
         this.tags = tags;
         this.user = user;
     }

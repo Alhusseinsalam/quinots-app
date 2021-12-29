@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @Table(name = "q_user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -39,6 +38,7 @@ public class User {
             referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",
                     referencedColumnName = "id"))
+    @JsonIgnore
     private List<Role> roles;
 
     public User(String username, String password, Role role) {

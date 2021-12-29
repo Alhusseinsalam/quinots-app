@@ -11,8 +11,12 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
     @Query("SELECT n FROM Note n" +
-            " WHERE (:words IS NULL OR n.description LIKE %:words% OR n.title LIKE %:words%)" +
+            " WHERE n.user.id=:userId " +
+            " AND (:words IS NULL OR n.description LIKE %:words% OR n.title LIKE %:words%)" +
             " AND ((:fromDate IS NULL OR n.dateTimeCreated >= STR_TO_DATE(:fromDate, '%Y-%m-%d %H:%i:%s'))" +
             " AND (:toDate IS NULL OR n.dateTimeCreated <= STR_TO_DATE(:toDate, '%Y-%m-%d %H:%i:%s')))")
-    List<Note> searchNotes(@Param("words") String includingWords, @Param("fromDate") Calendar fromDate, @Param("toDate") Calendar toDate);
+    List<Note> searchNotes(@Param("userId") Long userId, @Param("words") String includingWords, @Param("fromDate") Calendar fromDate, @Param("toDate") Calendar toDate);
+
+    @Query("SELECT n FROM Note n WHERE n.user.id=:userId")
+    List<Note> listNotesForUser(@Param("userId") Long userId);
 }

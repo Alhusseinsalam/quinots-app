@@ -1,7 +1,8 @@
-package dev.husein.quinots.service;
+package dev.husein.quinots.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.NotNull;
 import dev.husein.quinots.adapter.TagsConverter;
 import dev.husein.quinots.model.User;
 import lombok.*;
@@ -17,17 +18,12 @@ import java.util.List;
 @Setter
 @ToString
 public class NoteDTO {
-    @JsonProperty("noteId")
-    private Long id;
-
+    @NotNull
     @JsonProperty("title")
     private String title;
 
     @JsonProperty("description")
     private String description;
-
-    @JsonProperty("dateTimeCreated")
-    private Timestamp dateTimeCreated;
 
     @JsonProperty("tags")
     private List<String> tags;

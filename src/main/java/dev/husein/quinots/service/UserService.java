@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -63,6 +64,20 @@ public class UserService {
 
     public Optional<User> findUserById(Long userId) {
         return userRepository.findById(userId);
+    }
+
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    protected User verifyUser(String username) throws NoSuchElementException {
+        return this.findUserByUsername(username).orElseThrow(() ->
+                new NoSuchElementException("User does not exist " + username)
+        );
+    }
+
+    protected Long getUserIdByUsername(String username) {
+        return this.findUserByUsername(username).orElseThrow().getId();
     }
 
 }

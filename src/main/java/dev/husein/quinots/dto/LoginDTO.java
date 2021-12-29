@@ -1,4 +1,4 @@
-package dev.husein.quinots.model;
+package dev.husein.quinots.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;

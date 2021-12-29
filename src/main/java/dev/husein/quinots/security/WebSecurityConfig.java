@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/quinots/api/user/getToken").permitAll()
+                .antMatchers("/api/user/getToken").permitAll()
                 // Disallow everything else
                 .anyRequest().authenticated();
 

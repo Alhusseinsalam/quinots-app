@@ -38,7 +38,7 @@ public class QuinotsUserDetailsService implements UserDetailsService {
     public Optional<UserDetails> loadUserByJwtToken(String jwtToken) {
         if (jwtProvider.isValidToken(jwtToken)) {
             return Optional.of(
-                    withUsername(jwtProvider.getUsername(jwtToken))
+                    withUsername(jwtProvider.getUsernameFromToken(jwtToken))
                             .authorities(jwtProvider.getRoles(jwtToken))
                             .password("") //token does not have password but field may not be empty
                             .accountExpired(false)
@@ -52,7 +52,7 @@ public class QuinotsUserDetailsService implements UserDetailsService {
 
     public Optional<UserDetails> loadUserByJwtTokenAndDatabase(String jwtToken) {
         if (jwtProvider.isValidToken(jwtToken)) {
-            return Optional.of(loadUserByUsername(jwtProvider.getUsername(jwtToken)));
+            return Optional.of(loadUserByUsername(jwtProvider.getUsernameFromToken(jwtToken)));
         } else {
             return Optional.empty();
         }

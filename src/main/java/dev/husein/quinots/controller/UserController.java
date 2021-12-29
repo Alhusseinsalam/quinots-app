@@ -1,6 +1,6 @@
 package dev.husein.quinots.controller;
 
-import dev.husein.quinots.model.LoginDTO;
+import dev.husein.quinots.dto.LoginDTO;
 import dev.husein.quinots.model.Token;
 import dev.husein.quinots.model.User;
 import dev.husein.quinots.service.UserService;
@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/quinots/api/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
