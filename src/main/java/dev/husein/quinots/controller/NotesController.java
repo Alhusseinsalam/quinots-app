@@ -2,7 +2,6 @@ package dev.husein.quinots.controller;
 
 import dev.husein.quinots.dto.NoteDTO;
 import dev.husein.quinots.model.BaseResponse;
-import dev.husein.quinots.model.Note;
 import dev.husein.quinots.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;

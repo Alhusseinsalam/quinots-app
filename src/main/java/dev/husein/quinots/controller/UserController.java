@@ -1,6 +1,7 @@
 package dev.husein.quinots.controller;
 
 import dev.husein.quinots.dto.LoginDTO;
+import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.Token;
 import dev.husein.quinots.model.User;
 import dev.husein.quinots.service.UserService;
@@ -20,9 +21,8 @@ public class UserController {
 
     @PostMapping("/getToken")
     public Token getToken(@RequestBody LoginDTO user) {
-        System.out.println(user);
         return new Token(userService.signin(user.getUsername(), user.getPassword()).orElseThrow(()->
-                new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed")));
+                new QuinotsException("Login Failed")));
     }
 
     @PostMapping("/signup")

@@ -6,7 +6,6 @@ import dev.husein.quinots.dto.NoteDTO;
 import dev.husein.quinots.exception.QuinotsException;
 import dev.husein.quinots.model.BaseResponse;
 import dev.husein.quinots.model.Note;
-import dev.husein.quinots.model.User;
 import dev.husein.quinots.repository.NoteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

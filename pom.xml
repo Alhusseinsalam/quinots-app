@@ -17,6 +17,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <quinots-profile>default</quinots-profile>
     </properties>
 
     <dependencies>
@@ -42,6 +43,16 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.0.1-jre</version>
@@ -53,7 +64,6 @@
             <artifactId>jjwt</artifactId>
             <version>0.7.0</version>
         </dependency>
-
 
         <!-- Testing Dependencies -->
         <dependency>
