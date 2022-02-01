@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -45,5 +44,14 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = Arrays.asList(role);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

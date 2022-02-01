@@ -4,4 +4,3 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="dev.husein.quinots" level="DEBUG"/>
 </configuration>
-
